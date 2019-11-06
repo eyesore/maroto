@@ -168,6 +168,8 @@ func (s *PdfMaroto) TableList(header []string, contents [][]string, prop ...prop
 
 	tableProp.MakeValid()
 
+	colWidthMultsLen := len(tableProp.WidthMultipliers)
+
 	s.Row(tableProp.HeaderHeight, func() {
 		headerMarginTop := 2.0
 		qtdCols := float64(len(header))
@@ -176,7 +178,12 @@ func (s *PdfMaroto) TableList(header []string, contents [][]string, prop ...prop
 			hs := h
 			is := i
 
-			s.Col(func() {
+			w := 1
+			if i < colWidthMultsLen {
+				w = tableProp.WidthMultipliers[i]
+			}
+
+			s.VariableWidthCol(w, func() {
 				if headerMarginTop > s.rowHeight {
 					headerMarginTop = s.rowHeight
 				}
@@ -204,13 +211,78 @@ func (s *PdfMaroto) TableList(header []string, contents [][]string, prop ...prop
 				hs := float64(len(header))
 				sumOyYOffesets := contentMarginTop + s.offsetY + 2.0
 
-				s.Col(func() {
+				w := 1
+				if j < colWidthMultsLen {
+					w = tableProp.WithMultipliers[j]
+				}
+
+				s.VariableWidthCol(w, func() {
 					s.TextHelper.Add(cs, tableProp.ContentProp.ToTextProp(tableProp.Align, 0.0), sumOyYOffesets, float64(js), hs)
 				})
 			}
 		})
 	}
 }
+
+// func (s *PdfMaroto) TableList(header []string, contents [][]string, prop ...props.TableList) {
+// 	if len(header) == 0 {
+// 		return
+// 	}
+
+// 	if len(contents) == 0 {
+// 		return
+// 	}
+
+// 	tableProp := props.TableList{}
+// 	if len(prop) > 0 {
+// 		tableProp = prop[0]
+// 	}
+
+// 	tableProp.MakeValid()
+
+// 	s.Row(tableProp.HeaderHeight, func() {
+// 		headerMarginTop := 2.0
+// 		qtdCols := float64(len(header))
+
+// 		for i, h := range header {
+// 			hs := h
+// 			is := i
+
+// 			s.Col(func() {
+// 				if headerMarginTop > s.rowHeight {
+// 					headerMarginTop = s.rowHeight
+// 				}
+
+// 				reason := hs
+
+// 				sumOyYOffesets := headerMarginTop + s.offsetY + 2.5
+
+// 				s.TextHelper.Add(reason, tableProp.HeaderProp.ToTextProp(tableProp.Align, 0.0), sumOyYOffesets, float64(is), qtdCols)
+// 			})
+// 		}
+// 	})
+
+// 	s.Row(tableProp.HeaderContentSpace, func() {
+// 		s.ColSpace()
+// 	})
+
+// 	contentMarginTop := 2.0
+
+// 	for _, content := range contents {
+// 		s.Row(tableProp.ContentHeight, func() {
+// 			for j, c := range content {
+// 				cs := c
+// 				js := j
+// 				hs := float64(len(header))
+// 				sumOyYOffesets := contentMarginTop + s.offsetY + 2.0
+
+// 				s.Col(func() {
+// 					s.TextHelper.Add(cs, tableProp.ContentProp.ToTextProp(tableProp.Align, 0.0), sumOyYOffesets, float64(js), hs)
+// 				})
+// 			}
+// 		})
+// 	}
+// }
 
 // SetBorder enable the draw of lines in every cell.
 // Draw borders in all columns created.
@@ -309,6 +381,16 @@ func (s *PdfMaroto) Col(closure func()) {
 		s.createColSpace(widthPerCol)
 		closure()
 		s.rowColCount++
+	})
+}
+
+// VariableWidthCol create a column inside a row and enable to add
+func (s *PdfMaroto) VariableWidthCol(widthMultiplier int, closure func()) {
+	s.colsClosures = append(s.colsClosures, func() {
+		s.rowColCount++
+		width := s.Math.GetWidthPerCol(float64(s.rowColCount))
+		s.createColSpace(width * float64(widthMultiplier))
+		closure()
 	})
 }
 

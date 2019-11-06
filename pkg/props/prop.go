@@ -84,6 +84,8 @@ type TableList struct {
 	Align consts.Align
 	// HeaderContentSpace is the space between the header and the contents
 	HeaderContentSpace float64
+	// Width Multipliers for columns in list, default 1
+	WidthMultipliers []int
 }
 
 // MakeValid from Rect means will make the properties from a rectangle reliable to fit inside a cell
