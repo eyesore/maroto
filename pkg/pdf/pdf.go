@@ -2,6 +2,7 @@ package pdf
 
 import (
 	"bytes"
+	"fmt"
 
 	"github.com/eyesore/maroto/internal"
 	"github.com/eyesore/maroto/pkg/consts"
@@ -182,6 +183,8 @@ func (s *PdfMaroto) TableList(header []string, contents [][]string, prop ...prop
 			if i < colWidthMultsLen {
 				w = tableProp.WidthMultipliers[i]
 			}
+
+			fmt.Prinln("w: ", w)
 
 			s.VariableWidthCol(w, func() {
 				if headerMarginTop > s.rowHeight {
