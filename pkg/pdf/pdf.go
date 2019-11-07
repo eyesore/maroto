@@ -184,7 +184,7 @@ func (s *PdfMaroto) TableList(header []string, contents [][]string, prop ...prop
 				w = tableProp.WidthMultipliers[i]
 			}
 
-			fmt.Prinln("w: ", w)
+			fmt.Println("w: ", w)
 
 			s.VariableWidthCol(w, func() {
 				if headerMarginTop > s.rowHeight {
