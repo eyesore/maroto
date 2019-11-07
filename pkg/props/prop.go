@@ -86,6 +86,8 @@ type TableList struct {
 	HeaderContentSpace float64
 	// Width Multipliers for columns in list, default 1
 	WidthMultipliers []int
+	// Number of col spaces made, used with width multipliers
+	ColSpaces int
 }
 
 // MakeValid from Rect means will make the properties from a rectangle reliable to fit inside a cell

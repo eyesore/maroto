@@ -1,9 +1,7 @@
 package main
 
 import (
-	"encoding/base64"
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	"github.com/eyesore/maroto/pkg/consts"
@@ -15,122 +13,122 @@ func main() {
 	m := pdf.NewMaroto(consts.Portrait, consts.A4)
 	//m.SetBorder(true)
 
-	byteSlices, err := ioutil.ReadFile("internal/assets/images/biplane.jpg")
-	if err != nil {
-		fmt.Println("Got error while opening file:", err)
-		os.Exit(1)
-	}
+	// byteSlices, err := ioutil.ReadFile("internal/assets/images/biplane.jpg")
+	// if err != nil {
+	// 	fmt.Println("Got error while opening file:", err)
+	// 	os.Exit(1)
+	// }
 
-	base64 := base64.StdEncoding.EncodeToString(byteSlices)
+	//base64 := base64.StdEncoding.EncodeToString(byteSlices)
 
-	headerSmall, smallContent := getSmallContent()
+	//headerSmall, smallContent := getSmallContent()
 	headerMedium, mediumContent := getMediumContent()
 
-	m.RegisterHeader(func() {
+	// m.RegisterHeader(func() {
 
-		m.Row(20, func() {
-			m.Col(func() {
-				m.Base64Image(base64, consts.Jpg, props.Rect{
-					Center:  true,
-					Percent: 70,
-				})
-			})
+	// 	m.Row(20, func() {
+	// 		m.Col(func() {
+	// 			m.Base64Image(base64, consts.Jpg, props.Rect{
+	// 				Center:  true,
+	// 				Percent: 70,
+	// 			})
+	// 		})
 
-			m.ColSpaces(2)
+	// 		m.ColSpaces(2)
 
-			m.Col(func() {
-				m.QrCode("https://github.com/eyesore/maroto", props.Rect{
-					Percent: 75,
-				})
-			})
+	// 		m.Col(func() {
+	// 			m.QrCode("https://github.com/eyesore/maroto", props.Rect{
+	// 				Percent: 75,
+	// 			})
+	// 		})
 
-			m.Col(func() {
-				id := "https://github.com/eyesore/maroto"
-				_ = m.Barcode(id, props.Barcode{
-					Proportion: props.Proportion{Width: 50, Height: 10},
-					Percent:    75,
-				})
-				m.Text(id, props.Text{
-					Size:  7,
-					Align: consts.Center,
-					Top:   16,
-				})
-			})
-		})
+	// 		m.Col(func() {
+	// 			id := "https://github.com/eyesore/maroto"
+	// 			_ = m.Barcode(id, props.Barcode{
+	// 				Proportion: props.Proportion{Width: 50, Height: 10},
+	// 				Percent:    75,
+	// 			})
+	// 			m.Text(id, props.Text{
+	// 				Size:  7,
+	// 				Align: consts.Center,
+	// 				Top:   16,
+	// 			})
+	// 		})
+	// 	})
 
-		m.Line(1.0)
+	// 	m.Line(1.0)
 
-		m.Row(12, func() {
-			m.Col(func() {
-				_ = m.FileImage("internal/assets/images/goherbw.png", props.Rect{
-					Center: true,
-				})
-			})
+	// 	m.Row(12, func() {
+	// 		m.Col(func() {
+	// 			_ = m.FileImage("internal/assets/images/goherbw.png", props.Rect{
+	// 				Center: true,
+	// 			})
+	// 		})
 
-			m.ColSpace()
+	// 		m.ColSpace()
 
-			m.Col(func() {
-				m.Text("Packages Report: Daily", props.Text{
-					Top: 4,
-				})
-				m.Text("Type: Small, Medium", props.Text{
-					Top: 10,
-				})
-			})
+	// 		m.Col(func() {
+	// 			m.Text("Packages Report: Daily", props.Text{
+	// 				Top: 4,
+	// 			})
+	// 			m.Text("Type: Small, Medium", props.Text{
+	// 				Top: 10,
+	// 			})
+	// 		})
 
-			m.ColSpace()
+	// 		m.ColSpace()
 
-			m.Col(func() {
-				m.Text("20/07/1994", props.Text{
-					Size:   10,
-					Style:  consts.BoldItalic,
-					Top:    7.5,
-					Family: consts.Helvetica,
-				})
-			})
-		})
+	// 		m.Col(func() {
+	// 			m.Text("20/07/1994", props.Text{
+	// 				Size:   10,
+	// 				Style:  consts.BoldItalic,
+	// 				Top:    7.5,
+	// 				Family: consts.Helvetica,
+	// 			})
+	// 		})
+	// 	})
 
-		m.Line(1.0)
+	// 	m.Line(1.0)
 
-		m.Row(22, func() {
-			m.Col(func() {
-				m.Text(fmt.Sprintf("Small: %d, Medium %d", len(smallContent), len(mediumContent)), props.Text{
-					Size:  15,
-					Style: consts.Bold,
-					Align: consts.Center,
-					Top:   9,
-				})
-				m.Text("Brasil / São Paulo", props.Text{
-					Size:  12,
-					Align: consts.Center,
-					Top:   17,
-				})
-			})
-		})
+	// 	m.Row(22, func() {
+	// 		m.Col(func() {
+	// 			m.Text(fmt.Sprintf("Small: %d, Medium %d", len(smallContent), len(mediumContent)), props.Text{
+	// 				Size:  15,
+	// 				Style: consts.Bold,
+	// 				Align: consts.Center,
+	// 				Top:   9,
+	// 			})
+	// 			m.Text("Brasil / São Paulo", props.Text{
+	// 				Size:  12,
+	// 				Align: consts.Center,
+	// 				Top:   17,
+	// 			})
+	// 		})
+	// 	})
 
-		m.Line(1.0)
+	// 	m.Line(1.0)
 
-	})
+	// })
 
-	m.RegisterFooter(func() {
-		m.Row(40, func() {
-			m.Col(func() {
-				m.Signature("Signature 1", props.Font{
-					Family: consts.Courier,
-					Style:  consts.BoldItalic,
-					Size:   9,
-				})
-			})
+	// m.RegisterFooter(func() {
+	// 	m.Row(40, func() {
+	// 		m.Col(func() {
+	// 			m.Signature("Signature 1", props.Font{
+	// 				Family: consts.Courier,
+	// 				Style:  consts.BoldItalic,
+	// 				Size:   9,
+	// 			})
+	// 		})
 
-			m.Col(func() {
-				m.Signature("Signature 2")
-			})
+	// 		m.Col(func() {
+	// 			m.Signature("Signature 2")
+	// 		})
 
-			m.Col(func() {
-				m.Signature("Signature 3")
-			})
-		})
-	})
+	// 		m.Col(func() {
+	// 			m.Signature("Signature 3")
+	// 		})
+	// 	})
+	// })
 
 	m.Row(15, func() {
 		m.Col(func() {
@@ -141,7 +139,7 @@ func main() {
 		})
 	})
 
-	m.TableList(headerSmall, smallContent)
+	//m.TableList(headerSmall, smallContent)
 
 	m.Row(15, func() {
 		m.Col(func() {
@@ -162,9 +160,11 @@ func main() {
 			Family: consts.Courier,
 			Style:  consts.Italic,
 		},
+		WidthMultipliers: []int{2},
+		ColSpaces:        4,
 	})
 
-	err = m.OutputFileAndClose("internal/examples/pdfs/sample1.pdf")
+	err := m.OutputFileAndClose("../pdfs/sample1.pdf")
 	if err != nil {
 		fmt.Println("Could not save PDF:", err)
 		os.Exit(1)

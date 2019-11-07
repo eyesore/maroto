@@ -2,7 +2,6 @@ package pdf
 
 import (
 	"bytes"
-	"fmt"
 
 	"github.com/eyesore/maroto/internal"
 	"github.com/eyesore/maroto/pkg/consts"
@@ -174,19 +173,23 @@ func (s *PdfMaroto) TableList(header []string, contents [][]string, prop ...prop
 	s.Row(tableProp.HeaderHeight, func() {
 		headerMarginTop := 2.0
 		qtdCols := float64(len(header))
+		if tableProp.ColSpaces > 0 {
+			qtdCols = float64(tableProp.ColSpaces)
+		}
 
+		iStart := 0
 		for i, h := range header {
 			hs := h
-			is := i
 
 			w := 1
 			if i < colWidthMultsLen {
 				w = tableProp.WidthMultipliers[i]
 			}
 
-			fmt.Println("w: ", w)
+			is := iStart
+			iStart += w
 
-			s.VariableWidthCol(w, func() {
+			s.VariableWidthCol(tableProp.ColSpaces, w, func() {
 				if headerMarginTop > s.rowHeight {
 					headerMarginTop = s.rowHeight
 				}
@@ -195,7 +198,7 @@ func (s *PdfMaroto) TableList(header []string, contents [][]string, prop ...prop
 
 				sumOyYOffesets := headerMarginTop + s.offsetY + 2.5
 
-				s.TextHelper.Add(reason, tableProp.HeaderProp.ToTextProp(tableProp.Align, 0.0), sumOyYOffesets, float64(is), qtdCols)
+				s.TextHelper.VariableAdd(reason, tableProp.HeaderProp.ToTextProp(tableProp.Align, 0.0), sumOyYOffesets, float64(is), qtdCols, w)
 			})
 		}
 	})
@@ -208,10 +211,13 @@ func (s *PdfMaroto) TableList(header []string, contents [][]string, prop ...prop
 
 	for _, content := range contents {
 		s.Row(tableProp.ContentHeight, func() {
+			jStart := 0
 			for j, c := range content {
 				cs := c
-				js := j
 				hs := float64(len(header))
+				if tableProp.ColSpaces > 0 {
+					hs = float64(tableProp.ColSpaces)
+				}
 				sumOyYOffesets := contentMarginTop + s.offsetY + 2.0
 
 				w := 1
@@ -219,8 +225,11 @@ func (s *PdfMaroto) TableList(header []string, contents [][]string, prop ...prop
 					w = tableProp.WidthMultipliers[j]
 				}
 
-				s.VariableWidthCol(w, func() {
-					s.TextHelper.Add(cs, tableProp.ContentProp.ToTextProp(tableProp.Align, 0.0), sumOyYOffesets, float64(js), hs)
+				js := jStart
+				jStart += w
+
+				s.VariableWidthCol(tableProp.ColSpaces, w, func() {
+					s.TextHelper.VariableAdd(cs, tableProp.ContentProp.ToTextProp(tableProp.Align, 0.0), sumOyYOffesets, float64(js), hs, w)
 				})
 			}
 		})
@@ -388,12 +397,14 @@ func (s *PdfMaroto) Col(closure func()) {
 }
 
 // VariableWidthCol create a column inside a row and enable to add
-func (s *PdfMaroto) VariableWidthCol(widthMultiplier int, closure func()) {
+func (s *PdfMaroto) VariableWidthCol(colSpaces, widthMultiplier int, closure func()) {
 	s.colsClosures = append(s.colsClosures, func() {
-		s.rowColCount++
-		width := s.Math.GetWidthPerCol(float64(s.rowColCount))
+
+		width := s.Math.GetWidthPerCol(float64(colSpaces))
 		s.createColSpace(width * float64(widthMultiplier))
 		closure()
+		s.rowColCount++
+
 	})
 }
 
