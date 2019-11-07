@@ -1,10 +1,11 @@
 package internal
 
 import (
-	"github.com/johnfercher/maroto/pkg/consts"
-	"github.com/johnfercher/maroto/pkg/props"
-	"github.com/jung-kurt/gofpdf"
 	"strings"
+
+	"github.com/eyesore/maroto/pkg/consts"
+	"github.com/eyesore/maroto/pkg/props"
+	"github.com/jung-kurt/gofpdf"
 )
 
 // Text is the abstraction which deals of how to add text inside PDF

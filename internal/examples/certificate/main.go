@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/johnfercher/maroto/pkg/consts"
-	"github.com/johnfercher/maroto/pkg/pdf"
-	"github.com/johnfercher/maroto/pkg/props"
 	"os"
+
+	"github.com/eyesore/maroto/pkg/consts"
+	"github.com/eyesore/maroto/pkg/pdf"
+	"github.com/eyesore/maroto/pkg/props"
 )
 
 func main() {

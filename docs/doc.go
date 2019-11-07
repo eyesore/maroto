@@ -27,11 +27,11 @@ Installation
 
 To install the package on your system, run
 
-    go get github.com/johnfercher/maroto
+    go get github.com/eyesore/maroto
 
 Later, to receive updates, run
 
-    go get -u -v github.com/johnfercher/maroto/...
+    go get -u -v github.com/eyesore/maroto/...
 
 
 Quick Start

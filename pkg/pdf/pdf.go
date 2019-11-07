@@ -3,9 +3,9 @@ package pdf
 import (
 	"bytes"
 
-	"github.com/johnfercher/maroto/internal"
-	"github.com/johnfercher/maroto/pkg/consts"
-	"github.com/johnfercher/maroto/pkg/props"
+	"github.com/eyesore/maroto/internal"
+	"github.com/eyesore/maroto/pkg/consts"
+	"github.com/eyesore/maroto/pkg/props"
 	"github.com/jung-kurt/gofpdf"
 )
 
@@ -213,7 +213,7 @@ func (s *PdfMaroto) TableList(header []string, contents [][]string, prop ...prop
 
 				w := 1
 				if j < colWidthMultsLen {
-					w = tableProp.WithMultipliers[j]
+					w = tableProp.WidthMultipliers[j]
 				}
 
 				s.VariableWidthCol(w, func() {

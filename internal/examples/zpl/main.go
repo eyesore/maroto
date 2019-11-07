@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/johnfercher/maroto/pkg/consts"
-	"github.com/johnfercher/maroto/pkg/pdf"
-	"github.com/johnfercher/maroto/pkg/props"
 	"os"
+
+	"github.com/eyesore/maroto/pkg/consts"
+	"github.com/eyesore/maroto/pkg/pdf"
+	"github.com/eyesore/maroto/pkg/props"
 )
 
 func main() {
@@ -44,7 +45,7 @@ func main() {
 		})
 		m.ColSpace()
 		m.Col(func() {
-			m.QrCode("https://github.com/johnfercher/maroto", props.Rect{
+			m.QrCode("https://github.com/eyesore/maroto", props.Rect{
 				Percent: 75,
 			})
 		})
@@ -54,10 +55,10 @@ func main() {
 
 	m.Row(100, func() {
 		m.Col(func() {
-			_ = m.Barcode("https://github.com/johnfercher/maroto", props.Barcode{
+			_ = m.Barcode("https://github.com/eyesore/maroto", props.Barcode{
 				Percent: 70,
 			})
-			m.Text("https://github.com/johnfercher/maroto", props.Text{
+			m.Text("https://github.com/eyesore/maroto", props.Text{
 				Size:  20,
 				Align: consts.Center,
 				Top:   80,
