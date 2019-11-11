@@ -14,6 +14,7 @@ type Maroto interface {
 	// Grid System
 	Row(height float64, closure func())
 	Col(closure func())
+	VariableWidthCol(qtdCols int, colSize int, closure func())
 	ColSpace()
 	ColSpaces(qtd int)
 
@@ -26,6 +27,7 @@ type Maroto interface {
 	GetBorder() bool
 	GetPageSize() (float64, float64)
 	GetCurrentPage() int
+	NewPage()
 
 	// Outside Col/Row Components
 	TableList(header []string, contents [][]string, prop ...props.TableList)
@@ -323,6 +325,17 @@ func (s *PdfMaroto) Line(spaceHeight float64) {
 			s.Pdf.Line(left, s.offsetY+top+(spaceHeight/2.0), width-right, s.offsetY+top+(spaceHeight/2.0))
 		})
 	})
+}
+
+// NewPage forces a new page
+func (s *PdfMaroto) NewPage() {
+	if s.footerClosure != nil {
+		s.headerFooterContextActive = true
+		s.footerClosure()
+		s.headerFooterContextActive = false
+	}
+	s.offsetY = 0
+	s.pageIndex++
 }
 
 // Row define a row and enable add columns inside the row.
