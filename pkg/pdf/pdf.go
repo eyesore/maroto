@@ -329,11 +329,6 @@ func (s *PdfMaroto) Line(spaceHeight float64) {
 
 // NewPage forces a new page
 func (s *PdfMaroto) NewPage() {
-	if s.footerClosure != nil {
-		s.headerFooterContextActive = true
-		s.footerClosure()
-		s.headerFooterContextActive = false
-	}
 	s.offsetY = 0
 	s.pageIndex++
 }
