@@ -329,6 +329,7 @@ func (s *PdfMaroto) Line(spaceHeight float64) {
 
 // NewPage forces a new page
 func (s *PdfMaroto) NewPage() {
+	s.Pdf.AddPage()
 	s.offsetY = 0
 	s.pageIndex++
 }
