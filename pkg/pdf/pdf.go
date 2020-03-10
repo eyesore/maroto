@@ -28,6 +28,7 @@ type Maroto interface {
 	GetPageSize() (float64, float64)
 	GetCurrentPage() int
 	NewPage()
+	PageIndex()
 
 	// Outside Col/Row Components
 	TableList(header []string, contents [][]string, prop ...props.TableList)
@@ -332,6 +333,11 @@ func (s *PdfMaroto) NewPage() {
 	s.Pdf.AddPage()
 	s.offsetY = 0
 	s.pageIndex++
+}
+
+// Exposes pageIndex
+func (s *PdfMaroto) PageIndex() int {
+	return s.pageIndex
 }
 
 // Row define a row and enable add columns inside the row.
